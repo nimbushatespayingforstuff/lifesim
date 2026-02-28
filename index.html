@@ -1,120 +1,135 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>LifeSim</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #0f0f0f;
-      color: white;
-      margin: 0;
-    }
+<title>LifeSim</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f0f0f;
+  color: white;
+}
 
-    header {
-      background: #1c1c1c;
-      padding: 15px;
-      text-align: center;
-      font-size: 22px;
-      font-weight: bold;
-    }
+header {
+  background: #1c1c1c;
+  padding: 15px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+}
 
-    .container {
-      max-width: 500px;
-      margin: auto;
-      padding: 15px;
-    }
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 15px;
+}
 
-    .card {
-      background: #1e1e1e;
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
-    }
+.card {
+  background: #1e1e1e;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
 
-    .hidden {
-      display: none;
-    }
+input, select {
+  width: 100%;
+  padding: 8px;
+  margin: 6px 0;
+  border-radius: 6px;
+  border: none;
+}
 
-    .stat {
-      margin: 8px 0;
-    }
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #4caf50;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+}
 
-    .bar {
-      height: 10px;
-      border-radius: 6px;
-      background: #333;
-      overflow: hidden;
-    }
+button:hover {
+  background: #45a049;
+}
 
-    .fill {
-      height: 100%;
-    }
+.hidden {
+  display: none;
+}
 
-    button {
-      padding: 8px 15px;
-      margin: 5px 0;
-      border: none;
-      border-radius: 8px;
-      background: #4caf50;
-      color: white;
-      cursor: pointer;
-    }
+.tabs {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #1c1c1c;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+}
 
-    button:hover {
-      background: #45a049;
-    }
+.tabs button {
+  background: none;
+  color: white;
+  font-weight: bold;
+  width: auto;
+}
 
-    .tabs {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background: #1c1c1c;
-      display: flex;
-      justify-content: space-around;
-      padding: 10px 0;
-    }
+.statbar {
+  background: #333;
+  height: 10px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
 
-    .tabs button {
-      background: none;
-      color: white;
-      font-weight: bold;
-    }
-
-    .event-log {
-      max-height: 150px;
-      overflow-y: auto;
-      font-size: 14px;
-    }
-  </style>
+.fill {
+  height: 100%;
+}
+</style>
 </head>
 <body>
 
 <header>LifeSim</header>
 
-<div class="container">
+<!-- CHARACTER CREATION -->
+<div id="createScreen" class="container">
+  <div class="card">
+    <h2>Create Your Character</h2>
+    <input id="nameInput" placeholder="Enter Name">
+    <select id="genderInput">
+      <option>Male</option>
+      <option>Female</option>
+    </select>
+    <select id="countryInput">
+      <option>USA</option>
+      <option>Canada</option>
+      <option>UK</option>
+      <option>Australia</option>
+    </select>
+    <button onclick="startGame()">Start Life</button>
+  </div>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="gameScreen" class="hidden container">
 
   <!-- LIFE TAB -->
   <div id="lifeTab">
-
     <div class="card">
-      <h2 id="age">Age: 0</h2>
-      <p id="money">Money: $0</p>
+      <h2 id="charName"></h2>
+      <p id="age"></p>
+      <p id="money"></p>
     </div>
 
     <div class="card">
-      <div class="stat">Health
-        <div class="bar"><div id="healthBar" class="fill" style="background:red;width:80%"></div></div>
-      </div>
-      <div class="stat">Smarts
-        <div class="bar"><div id="smartsBar" class="fill" style="background:blue;width:50%"></div></div>
-      </div>
-      <div class="stat">Looks
-        <div class="bar"><div id="looksBar" class="fill" style="background:pink;width:50%"></div></div>
-      </div>
-      <div class="stat">Happiness
-        <div class="bar"><div id="happinessBar" class="fill" style="background:yellow;width:50%"></div></div>
-      </div>
+      Health
+      <div class="statbar"><div id="healthBar" class="fill" style="background:red;width:80%"></div></div>
+      Smarts
+      <div class="statbar"><div id="smartsBar" class="fill" style="background:blue;width:50%"></div></div>
+      Looks
+      <div class="statbar"><div id="looksBar" class="fill" style="background:pink;width:50%"></div></div>
+      Happiness
+      <div class="statbar"><div id="happinessBar" class="fill" style="background:yellow;width:50%"></div></div>
     </div>
 
     <div class="card">
@@ -122,109 +137,128 @@
     </div>
 
     <div class="card">
-      <h3>Life Events</h3>
-      <div id="log" class="event-log"></div>
+      <div id="log"></div>
     </div>
-
   </div>
 
-  <!-- FEATURES TAB -->
-  <div id="featuresTab" class="hidden">
+  <!-- CAREER TAB -->
+  <div id="careerTab" class="hidden">
     <div class="card">
-      <h3>Features</h3>
-      <p>📚 School System (Coming Soon)</p>
-      <p>💼 Job System (Coming Soon)</p>
-      <p>🚔 Crime System (Coming Soon)</p>
-      <p>💕 Relationships (Coming Soon)</p>
-      <p>💾 Save System (Coming Soon)</p>
+      <h3>Career</h3>
+      <button onclick="getJob()">Get Job ($2000)</button>
+    </div>
+  </div>
+
+  <!-- CRIME TAB -->
+  <div id="crimeTab" class="hidden">
+    <div class="card">
+      <h3>Crime</h3>
+      <button onclick="commitCrime()">Commit Crime</button>
+    </div>
+  </div>
+
+  <!-- RELATIONSHIPS TAB -->
+  <div id="relationshipTab" class="hidden">
+    <div class="card">
+      <h3>Relationships</h3>
+      <button onclick="date()">Go On Date</button>
+    </div>
+  </div>
+
+  <!-- OPTIONS TAB -->
+  <div id="optionsTab" class="hidden">
+    <div class="card">
+      <h3>Options</h3>
+      <button onclick="resetGame()">Restart Life</button>
     </div>
   </div>
 
 </div>
 
-<!-- BOTTOM TABS -->
-<div class="tabs">
+<div class="tabs hidden" id="tabBar">
   <button onclick="showTab('life')">Life</button>
-  <button onclick="showTab('features')">Features</button>
+  <button onclick="showTab('career')">Career</button>
+  <button onclick="showTab('crime')">Crime</button>
+  <button onclick="showTab('relationship')">Relationships</button>
+  <button onclick="showTab('options')">Options</button>
 </div>
 
 <script>
-  let age = 0;
-  let health = 80;
-  let smarts = 50;
-  let looks = 50;
-  let happiness = 50;
-  let money = 0;
+let age, health, smarts, looks, happiness, money, name;
 
-  function clamp(val) {
-    return Math.max(0, Math.min(100, val));
-  }
+function startGame() {
+  name = document.getElementById("nameInput").value || "John Doe";
+  age = 0;
+  health = 80;
+  smarts = 50;
+  looks = 50;
+  happiness = 50;
+  money = 0;
 
-  function updateUI() {
-    document.getElementById("age").innerText = "Age: " + age;
-    document.getElementById("money").innerText = "Money: $" + money;
-
-    document.getElementById("healthBar").style.width = health + "%";
-    document.getElementById("smartsBar").style.width = smarts + "%";
-    document.getElementById("looksBar").style.width = looks + "%";
-    document.getElementById("happinessBar").style.width = happiness + "%";
-  }
-
-  function addEvent(text) {
-    const log = document.getElementById("log");
-    const entry = document.createElement("div");
-    entry.textContent = "Age " + age + ": " + text;
-    log.prepend(entry);
-  }
-
-  function ageUp() {
-    age++;
-
-    let event = Math.floor(Math.random() * 4);
-
-    if (event === 0) {
-      smarts += 5;
-      addEvent("You studied and improved your smarts.");
-    } 
-    else if (event === 1) {
-      money += 1000;
-      happiness += 5;
-      addEvent("You worked and earned $1000.");
-    } 
-    else if (event === 2) {
-      health -= 10;
-      addEvent("You got sick this year.");
-    } 
-    else {
-      looks += 5;
-      addEvent("You had a glow up.");
-    }
-
-    health = clamp(health);
-    smarts = clamp(smarts);
-    looks = clamp(looks);
-    happiness = clamp(happiness);
-
-    if (health <= 0) {
-      addEvent("You died.");
-      setTimeout(() => location.reload(), 2000);
-    }
-
-    updateUI();
-  }
-
-  function showTab(tab) {
-    document.getElementById("lifeTab").classList.add("hidden");
-    document.getElementById("featuresTab").classList.add("hidden");
-
-    if (tab === "life") {
-      document.getElementById("lifeTab").classList.remove("hidden");
-    } else {
-      document.getElementById("featuresTab").classList.remove("hidden");
-    }
-  }
+  document.getElementById("createScreen").classList.add("hidden");
+  document.getElementById("gameScreen").classList.remove("hidden");
+  document.getElementById("tabBar").classList.remove("hidden");
 
   updateUI();
+}
+
+function updateUI() {
+  document.getElementById("charName").innerText = name;
+  document.getElementById("age").innerText = "Age: " + age;
+  document.getElementById("money").innerText = "Money: $" + money;
+
+  document.getElementById("healthBar").style.width = health + "%";
+  document.getElementById("smartsBar").style.width = smarts + "%";
+  document.getElementById("looksBar").style.width = looks + "%";
+  document.getElementById("happinessBar").style.width = happiness + "%";
+}
+
+function addEvent(text) {
+  let entry = document.createElement("div");
+  entry.textContent = "Age " + age + ": " + text;
+  document.getElementById("log").prepend(entry);
+}
+
+function ageUp() {
+  age++;
+  happiness += 2;
+  updateUI();
+}
+
+function getJob() {
+  money += 2000;
+  happiness -= 2;
+  addEvent("You got a basic job.");
+  updateUI();
+}
+
+function commitCrime() {
+  if (Math.random() < 0.5) {
+    money += 5000;
+    addEvent("You committed a crime and got away with it.");
+  } else {
+    health -= 20;
+    addEvent("You got caught and beaten.");
+  }
+  updateUI();
+}
+
+function date() {
+  happiness += 10;
+  addEvent("You went on a date.");
+  updateUI();
+}
+
+function resetGame() {
+  location.reload();
+}
+
+function showTab(tab) {
+  ["life","career","crime","relationship","options"].forEach(t=>{
+    document.getElementById(t+"Tab").classList.add("hidden");
+  });
+  document.getElementById(tab+"Tab").classList.remove("hidden");
+}
 </script>
 
 </body>
