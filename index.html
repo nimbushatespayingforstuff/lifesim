@@ -4,85 +4,186 @@
   <title>LifeSim</title>
   <style>
     body {
-      font-family: Arial;
-      background-color: #111;
+      font-family: Arial, sans-serif;
+      background-color: #0f0f0f;
       color: white;
+      margin: 0;
       text-align: center;
     }
+
+    header {
+      background: #1c1c1c;
+      padding: 15px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: #1e1e1e;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .stat {
+      margin: 8px 0;
+      text-align: left;
+    }
+
+    .bar {
+      height: 10px;
+      border-radius: 6px;
+      background: #333;
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+    }
+
     button {
       padding: 10px 20px;
       font-size: 16px;
-      margin-top: 15px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #4caf50;
+      color: white;
       cursor: pointer;
     }
-    .stats {
-      margin-top: 20px;
+
+    button:hover {
+      background: #45a049;
+    }
+
+    .event-log {
+      text-align: left;
+      max-height: 150px;
+      overflow-y: auto;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
 
-  <h1>LifeSim</h1>
-  <h2 id="age">Age: 0</h2>
+<header>LifeSim</header>
 
-  <div class="stats">
-    <p id="health"></p>
-    <p id="smarts"></p>
-    <p id="looks"></p>
-    <p id="happiness"></p>
-    <p id="money"></p>
+<div class="container">
+
+  <div class="card">
+    <h2 id="age">Age: 0</h2>
+    <p id="money">Money: $0</p>
   </div>
 
-  <button onclick="ageUp()">Age Up</button>
+  <div class="card">
+    <div class="stat">
+      Health
+      <div class="bar"><div id="healthBar" class="fill" style="background:red;width:80%"></div></div>
+    </div>
+    <div class="stat">
+      Smarts
+      <div class="bar"><div id="smartsBar" class="fill" style="background:blue;width:50%"></div></div>
+    </div>
+    <div class="stat">
+      Looks
+      <div class="bar"><div id="looksBar" class="fill" style="background:pink;width:50%"></div></div>
+    </div>
+    <div class="stat">
+      Happiness
+      <div class="bar"><div id="happinessBar" class="fill" style="background:yellow;width:50%"></div></div>
+    </div>
+  </div>
 
-  <script>
-    let age = 0;
-    let health = 80;
-    let smarts = 50;
-    let looks = 50;
-    let happiness = 50;
-    let money = 0;
+  <div class="card">
+    <button onclick="ageUp()">Age Up</button>
+  </div>
 
-    function updateStats() {
-      document.getElementById("age").innerText = "Age: " + age;
-      document.getElementById("health").innerText = "Health: " + health;
-      document.getElementById("smarts").innerText = "Smarts: " + smarts;
-      document.getElementById("looks").innerText = "Looks: " + looks;
-      document.getElementById("happiness").innerText = "Happiness: " + happiness;
-      document.getElementById("money").innerText = "Money: $" + money;
+  <div class="card">
+    <h3>Life Events</h3>
+    <div class="event-log" id="log"></div>
+  </div>
+
+</div>
+
+<script>
+  let age = 0;
+  let health = 80;
+  let smarts = 50;
+  let looks = 50;
+  let happiness = 50;
+  let money = 0;
+
+  function clamp(value) {
+    return Math.max(0, Math.min(100, value));
+  }
+
+  function updateUI() {
+    document.getElementById("age").innerText = "Age: " + age;
+    document.getElementById("money").innerText = "Money: $" + money;
+
+    document.getElementById("healthBar").style.width = health + "%";
+    document.getElementById("smartsBar").style.width = smarts + "%";
+    document.getElementById("looksBar").style.width = looks + "%";
+    document.getElementById("happinessBar").style.width = happiness + "%";
+  }
+
+  function addEvent(text) {
+    const log = document.getElementById("log");
+    const entry = document.createElement("div");
+    entry.textContent = "Age " + age + ": " + text;
+    log.prepend(entry);
+  }
+
+  function ageUp() {
+    age++;
+
+    let randomEvent = Math.floor(Math.random() * 5);
+
+    if (randomEvent === 0) {
+      smarts += 5;
+      happiness -= 3;
+      addEvent("You studied hard this year.");
+    } 
+    else if (randomEvent === 1) {
+      money += 1000;
+      happiness += 5;
+      addEvent("You got a small job and earned $1000.");
+    } 
+    else if (randomEvent === 2) {
+      health -= 10;
+      addEvent("You got sick.");
+    } 
+    else if (randomEvent === 3) {
+      looks += 5;
+      addEvent("You had a glow up.");
+    } 
+    else {
+      happiness += 8;
+      addEvent("You had a great year.");
     }
 
-    function ageUp() {
-      age++;
+    health = clamp(health);
+    smarts = clamp(smarts);
+    looks = clamp(looks);
+    happiness = clamp(happiness);
 
-      let randomEvent = Math.floor(Math.random() * 4);
-
-      if (randomEvent === 0) {
-        smarts += 5;
-        happiness -= 5;
-        alert("You studied hard this year.");
-      } else if (randomEvent === 1) {
-        money += 1000;
-        happiness += 5;
-        alert("You got a small job!");
-      } else if (randomEvent === 2) {
-        health -= 10;
-        alert("You got sick.");
-      } else {
-        looks += 3;
-        alert("You had a glow up.");
-      }
-
-      if (health <= 0) {
-        alert("You died.");
-        location.reload();
-      }
-
-      updateStats();
+    if (health <= 0) {
+      addEvent("You died.");
+      setTimeout(() => location.reload(), 2000);
     }
 
-    updateStats();
-  </script>
+    updateUI();
+  }
+
+  updateUI();
+</script>
 
 </body>
 </html>
