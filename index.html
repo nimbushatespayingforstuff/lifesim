@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LifeSim</title>
+  <style>
+    body {
+      font-family: Arial;
+      background-color: #111;
+      color: white;
+      text-align: center;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+    .stats {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>LifeSim</h1>
+  <h2 id="age">Age: 0</h2>
+
+  <div class="stats">
+    <p id="health"></p>
+    <p id="smarts"></p>
+    <p id="looks"></p>
+    <p id="happiness"></p>
+    <p id="money"></p>
+  </div>
+
+  <button onclick="ageUp()">Age Up</button>
+
+  <script>
+    let age = 0;
+    let health = 80;
+    let smarts = 50;
+    let looks = 50;
+    let happiness = 50;
+    let money = 0;
+
+    function updateStats() {
+      document.getElementById("age").innerText = "Age: " + age;
+      document.getElementById("health").innerText = "Health: " + health;
+      document.getElementById("smarts").innerText = "Smarts: " + smarts;
+      document.getElementById("looks").innerText = "Looks: " + looks;
+      document.getElementById("happiness").innerText = "Happiness: " + happiness;
+      document.getElementById("money").innerText = "Money: $" + money;
+    }
+
+    function ageUp() {
+      age++;
+
+      let randomEvent = Math.floor(Math.random() * 4);
+
+      if (randomEvent === 0) {
+        smarts += 5;
+        happiness -= 5;
+        alert("You studied hard this year.");
+      } else if (randomEvent === 1) {
+        money += 1000;
+        happiness += 5;
+        alert("You got a small job!");
+      } else if (randomEvent === 2) {
+        health -= 10;
+        alert("You got sick.");
+      } else {
+        looks += 3;
+        alert("You had a glow up.");
+      }
+
+      if (health <= 0) {
+        alert("You died.");
+        location.reload();
+      }
+
+      updateStats();
+    }
+
+    updateStats();
+  </script>
+
+</body>
+</html>
