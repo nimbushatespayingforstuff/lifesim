@@ -8,20 +8,20 @@
       background-color: #0f0f0f;
       color: white;
       margin: 0;
-      text-align: center;
     }
 
     header {
       background: #1c1c1c;
       padding: 15px;
-      font-size: 24px;
+      text-align: center;
+      font-size: 22px;
       font-weight: bold;
     }
 
     .container {
       max-width: 500px;
       margin: auto;
-      padding: 20px;
+      padding: 15px;
     }
 
     .card {
@@ -29,12 +29,15 @@
       border-radius: 12px;
       padding: 15px;
       margin-bottom: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    }
+
+    .hidden {
+      display: none;
     }
 
     .stat {
       margin: 8px 0;
-      text-align: left;
     }
 
     .bar {
@@ -49,9 +52,8 @@
     }
 
     button {
-      padding: 10px 20px;
-      font-size: 16px;
-      margin-top: 10px;
+      padding: 8px 15px;
+      margin: 5px 0;
       border: none;
       border-radius: 8px;
       background: #4caf50;
@@ -63,8 +65,23 @@
       background: #45a049;
     }
 
+    .tabs {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1c1c1c;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+    }
+
+    .tabs button {
+      background: none;
+      color: white;
+      font-weight: bold;
+    }
+
     .event-log {
-      text-align: left;
       max-height: 150px;
       overflow-y: auto;
       font-size: 14px;
@@ -77,39 +94,58 @@
 
 <div class="container">
 
-  <div class="card">
-    <h2 id="age">Age: 0</h2>
-    <p id="money">Money: $0</p>
+  <!-- LIFE TAB -->
+  <div id="lifeTab">
+
+    <div class="card">
+      <h2 id="age">Age: 0</h2>
+      <p id="money">Money: $0</p>
+    </div>
+
+    <div class="card">
+      <div class="stat">Health
+        <div class="bar"><div id="healthBar" class="fill" style="background:red;width:80%"></div></div>
+      </div>
+      <div class="stat">Smarts
+        <div class="bar"><div id="smartsBar" class="fill" style="background:blue;width:50%"></div></div>
+      </div>
+      <div class="stat">Looks
+        <div class="bar"><div id="looksBar" class="fill" style="background:pink;width:50%"></div></div>
+      </div>
+      <div class="stat">Happiness
+        <div class="bar"><div id="happinessBar" class="fill" style="background:yellow;width:50%"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <button onclick="ageUp()">Age Up</button>
+    </div>
+
+    <div class="card">
+      <h3>Life Events</h3>
+      <div id="log" class="event-log"></div>
+    </div>
+
   </div>
 
-  <div class="card">
-    <div class="stat">
-      Health
-      <div class="bar"><div id="healthBar" class="fill" style="background:red;width:80%"></div></div>
-    </div>
-    <div class="stat">
-      Smarts
-      <div class="bar"><div id="smartsBar" class="fill" style="background:blue;width:50%"></div></div>
-    </div>
-    <div class="stat">
-      Looks
-      <div class="bar"><div id="looksBar" class="fill" style="background:pink;width:50%"></div></div>
-    </div>
-    <div class="stat">
-      Happiness
-      <div class="bar"><div id="happinessBar" class="fill" style="background:yellow;width:50%"></div></div>
+  <!-- FEATURES TAB -->
+  <div id="featuresTab" class="hidden">
+    <div class="card">
+      <h3>Features</h3>
+      <p>📚 School System (Coming Soon)</p>
+      <p>💼 Job System (Coming Soon)</p>
+      <p>🚔 Crime System (Coming Soon)</p>
+      <p>💕 Relationships (Coming Soon)</p>
+      <p>💾 Save System (Coming Soon)</p>
     </div>
   </div>
 
-  <div class="card">
-    <button onclick="ageUp()">Age Up</button>
-  </div>
+</div>
 
-  <div class="card">
-    <h3>Life Events</h3>
-    <div class="event-log" id="log"></div>
-  </div>
-
+<!-- BOTTOM TABS -->
+<div class="tabs">
+  <button onclick="showTab('life')">Life</button>
+  <button onclick="showTab('features')">Features</button>
 </div>
 
 <script>
@@ -120,8 +156,8 @@
   let happiness = 50;
   let money = 0;
 
-  function clamp(value) {
-    return Math.max(0, Math.min(100, value));
+  function clamp(val) {
+    return Math.max(0, Math.min(100, val));
   }
 
   function updateUI() {
@@ -144,29 +180,24 @@
   function ageUp() {
     age++;
 
-    let randomEvent = Math.floor(Math.random() * 5);
+    let event = Math.floor(Math.random() * 4);
 
-    if (randomEvent === 0) {
+    if (event === 0) {
       smarts += 5;
-      happiness -= 3;
-      addEvent("You studied hard this year.");
+      addEvent("You studied and improved your smarts.");
     } 
-    else if (randomEvent === 1) {
+    else if (event === 1) {
       money += 1000;
       happiness += 5;
-      addEvent("You got a small job and earned $1000.");
+      addEvent("You worked and earned $1000.");
     } 
-    else if (randomEvent === 2) {
+    else if (event === 2) {
       health -= 10;
-      addEvent("You got sick.");
-    } 
-    else if (randomEvent === 3) {
-      looks += 5;
-      addEvent("You had a glow up.");
+      addEvent("You got sick this year.");
     } 
     else {
-      happiness += 8;
-      addEvent("You had a great year.");
+      looks += 5;
+      addEvent("You had a glow up.");
     }
 
     health = clamp(health);
@@ -180,6 +211,17 @@
     }
 
     updateUI();
+  }
+
+  function showTab(tab) {
+    document.getElementById("lifeTab").classList.add("hidden");
+    document.getElementById("featuresTab").classList.add("hidden");
+
+    if (tab === "life") {
+      document.getElementById("lifeTab").classList.remove("hidden");
+    } else {
+      document.getElementById("featuresTab").classList.remove("hidden");
+    }
   }
 
   updateUI();
